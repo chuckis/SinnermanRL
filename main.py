@@ -1,27 +1,22 @@
-from bearlibterminal import terminal
-from clubsandwich.director import DirectorLoop, Scene
+from clubsandwich.blt.nice_terminal import terminal
+from clubsandwich.director import DirectorLoop
+from clubsandwich.geom import Size
 
-class BasicLoop2(DirectorLoop):
+from main_menu_scene import MainMenuScene
+
+WINDOW_SIZE = Size(80, 46)
+
+class GameLoop(DirectorLoop):
+    def terminal_init(self):
+        super().terminal_init()
+        terminal.set("""
+        window.resizeable=true;
+        window.size={size.width}x{size.height}
+        """.format(size=WINDOW_SIZE))
+
     def get_initial_scene(self):
-        return MainMenuScene()
-
-class MainMenuScene(Scene):
-    def terminal_update(self, is_active=False):
-        print(0, 0, "Press Enter to begin game, Esc to quit")
-
-    def terminal_read(self, val):
-        if val == terminal.TK_ENTER:
-            self.director.push_scene(GameScene())
-        elif val == terminal.TK_ESCAPE:
-            self.director.pop_scene()
-
-class GameScene(Scene):
-    def terminal_update(self, is_active=False):
-        print(0, 0, "You are playing the game, it is so fun! Press Esc to stop.")
-
-    def terminal_read(self, val):
-        if val == terminal.TK_ESCAPE:
-            self.director.pop_scene()
-
+        return MainMenuScene()    
+   
 if __name__ == '__main__':
-    BasicLoop2().run()
+ 
+  GameLoop().run()

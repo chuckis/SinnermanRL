@@ -1,0 +1,2 @@
+class GameMainScene:
+    pass
